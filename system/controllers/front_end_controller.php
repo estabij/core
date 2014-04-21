@@ -56,15 +56,16 @@ class front_end_controller {
 			if(strpos($uri, "?")!==false) {
 				list($uri,) = explode("?", $uri);
 			}
-			$uri_parts1 = explode("/", $uri);
+			// $uri_parts1 = explode("/", $uri);
 
-			$uri_parts = array();
-			foreach($uri_parts1 as $uri_part) {
-				if ( !empty($uri_part) ) {
-					$uri_parts[] = $uri_part;
-				}
-			}			
-			return array('uri'=>$uri, 'uri_parts'=>$uri_parts);
+			// $uri_parts = array();
+			// foreach($uri_parts1 as $uri_part) {
+			// 	if ( !empty($uri_part) ) {
+			// 		$uri_parts[] = $uri_part;
+			// 	}
+			// }			
+			// return array('uri'=>$uri, 'uri_parts'=>$uri_parts);
+			return $uri;
 		} else {
 			return false;
 		}

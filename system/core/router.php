@@ -23,12 +23,11 @@ class router {
 	private function __construct() {}
 
 	public function route($url, $uri) {
-
-		$ctrl = $this->scan($url, $uri);
-		if ( !$ctrl ) {
-			error_controller::getInstance()->error404();
-		} else {
+		$ctrl = $this->getController($url, $uri);
+		if ( $ctrl ) {
 			$this->invoke_controller($ctrl);
+		} else {
+			error_controller::getInstance()->error404();
 		}
 	}	
 
@@ -40,9 +39,6 @@ class router {
 		    if (!isset($ctrl['method'])) {
 		        throw new Exception("Invoke controller has no controller method");
 		    }            
-		    if (!isset($ctrl['params'])) {
-		        $ctrl['params'] = array();
-		    }
 
 		    include(APPLICATION_PATH.'controllers/'.$ctrl['class'].'.php');
 
@@ -54,38 +50,44 @@ class router {
 	}
 
 	protected function extract_ctrl($_ctrl) {
+
 		$parts = explode("/", $_ctrl);
 		$numparts = count($parts);
-		$params = array();
-		$ctrl = array();
-		for($i=0;$i<$numparts;$i++) {
-			if ($i==0) { $ctrl['class']  = $parts[$i]; 	}
-			if ($i==1) { $ctrl['method'] = $parts[$i]; 	}
-			if ($i>1)  { $params[$i-2]   = $parts[$i]; 	}
+
+		if ( $numparts < 2 ) {
+			var_dump($parts);
+			throw new Exception ( 'Router cannot find controller or method' );
 		}
-		if ( count($params) ) {
-			$ctrl['params'] = $params;
+
+		$ctrl['class']  = $parts[0];
+		$ctrl['method'] = $parts[1];
+
+		$ctrl['params'] = array();		
+		for ( $i = 2 ; $i < $numparts ; $i++ ) {
+			$ctrl['params'][] = $parts[$i]; 	
 		}
+
 		return $ctrl; 
 	}
 
-	protected function scan($url, $uri) {
+	// this method is public so we can easily unit test
+	public function getController($url, $uri) {
 		
 		include(APPLICATION_PATH.'config/routes.php');
 
-		$_uri = $uri['uri'];
+		$uri = strtolower($uri);
 
 		// static routes
 		foreach ( $sroute as $pattern => $replacement) {
-			if ( strcasecmp($pattern, $_uri)==0) {
+			if ( strcasecmp($pattern, $uri)==0) {
 				return $this->extract_ctrl($replacement);
 			}
 		} 
 
 		// regexp routes
 		foreach ( $rroute as $pattern => $replacement ) {
-			if ( preg_match($pattern, $_uri) ) {
-				return $this->extract_ctrl(preg_replace($pattern, $replacement, $_uri)); 
+			if ( preg_match($pattern, $uri) ) {
+				return $this->extract_ctrl(preg_replace($pattern, $replacement, $uri)); 
 			}
 		}
 

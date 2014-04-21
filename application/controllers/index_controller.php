@@ -13,22 +13,32 @@ class index_controller extends base_controller {
 
     public function index(array $param = array()) {
 
-        if ( count($param)==0 ) {
+        $numParam = count($param);
+
+        switch ( $numParam ) {
+
+            case 0:
+                $this->renderView('index_view');
+            break;
         
-            $this->renderView('index_view');
-        
-        } else {
-        
-            switch ($param[0]) {
-                case 'foo':
-                    $note = "This is foo";
-                    $this->renderView('index_view', array('note'=>$note));
-                break;
-                case 'bar':
-                    $note = "This is bar";
-                    $this->renderView('index_view', array('note'=>$note));
-                break;
-            }
+            case 1:
+                $note = "This is ". $param[0];
+                $this->renderView('index_view', array('note'=>$note));
+            break;
+
+            case 2:
+                $note = "This is ".$param[0].'/'.$param[1];
+                $this->renderView('index_view', array('note'=>$note));
+            break;
+
+            case 3:
+                $note = "This is ".$param[0].'/'.$param[1] .'/'.$param[2];
+                $this->renderView('index_view', array('note'=>$note));
+            break;
+
+            default:
+                $note = "Extra parameters provided which we accept";
+                $this->renderView('index_view', array('note'=>$note));
         }
     }
 
