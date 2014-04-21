@@ -5,8 +5,6 @@
  *
  */
 
-require_once(SYSTEM_PATH.'controllers/base_controller.php');
-
 class index_controller extends base_controller {
 	
     public function __construct() {}

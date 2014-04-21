@@ -38,9 +38,14 @@ define('APPLICATION_PATH', '../application/');
 define('SYSTEM_PATH', '../system/');
 
 /*
+ * load the autoloader
+ */
+require_once(SYSTEM_PATH."core/autoloader.php");
+autoloader::getInstance()->registerLoader();
+
+/*
  * load the front end controller
- *  and start your web application...
+ * and start your web application...
  */
 require_once(SYSTEM_PATH."controllers/front_end_controller.php");
-
 front_end_controller::getInstance()->run();
