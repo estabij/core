@@ -2,7 +2,9 @@
 /**
  * base_model
  *
- * @author estabij
+ * @author Erik Stabij <erik@erikstabij.com>
+ * @version 0.10
+ * @package core
  */
 require_once(SYSTEM_PATH.'core/driver_factory.php');
 class base_model {
