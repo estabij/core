@@ -1,0 +1,18 @@
+{
+    "name": "core/core",
+    "description": "Core Frameworks",
+    "keywords": ["php framework"],
+    "homepage": "http://github.com/estabij/core",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Erik Stabij",
+            "email": "erik@erikstabij.com",
+            "homepage": "http://www.erikstabij.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    }
+}
