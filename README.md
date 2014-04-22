@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/estabij/core.svg?branch=master)](https://travis-ci.org/estabij/core)
+
     Core Frameworks
     
     Developed by Erik Stabij.
