@@ -1,0 +1,13 @@
+{
+    "static":
+    {
+        "/"                 : "index_controller/index",
+        "/foo"              : "index_controller/foo",
+        "/bar"              : "index_controller/bar",
+    },
+
+    "dynamic":
+    {
+        "#^/foo/([0-9]*)$#"  : "index_controller/foo/$1"
+    }
+}

@@ -5,17 +5,30 @@
 *
 * @author estabij
 */
+
+require_once '../vendor/autoload.php'; //for Twig templating
+
 class base_controller {
-        
+
+    private $templating = 'Twig';
+
     public function __construct() {}
-    
+
     protected function renderView($template, array $data = array(), $render=true) {
-        
+        if ( $this->templating == 'Twig' ) {
+            $this->renderTwigView($template, $data, $render);
+        } else {
+            $this->renderBareView($template, $data, $render);
+        }
+    }
+
+    protected function renderBareView($template, array $data = array(), $render=true) {
+
         $base_url = $this->base_url();
         extract($data);
-        
+
         ob_start();
-        include(APPLICATION_PATH.'views/'.$template.'.php');
+        include(APPLICATION_PATH.'views/'.$template.'.html');
         if ( $render ) {
             ob_end_flush();
             return true;
@@ -23,7 +36,25 @@ class base_controller {
             return ob_get_clean();
         }
     }
-    
+
+    protected function renderTwigView($template, array $data = array(), $render=true) {
+
+        $loader = new Twig_Loader_Filesystem(APPLICATION_PATH.'views/');
+        $twig = new Twig_Environment($loader, array(
+            'cache' => APPLICATION_PATH.'views/compilation_cache',
+        ));
+
+        $base_url = $this->base_url();
+        extract($data);
+
+        $output = $twig->render($template.'.html', $data);
+        if ( $render ) {
+            echo $output;
+        } else {
+            return $output;
+        }
+    }
+
     protected function base_url(){
         return sprintf(
           "%s://%s%s",

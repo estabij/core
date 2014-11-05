@@ -24,6 +24,7 @@ class router {
 
 	public function route($url, $uri) {
 		$ctrl = $this->getController($url, $uri);
+//        var_dump($ctrl);
 		if ( $ctrl ) {
 			$this->invoke_controller($ctrl);
 		} else {
@@ -72,24 +73,34 @@ class router {
 
 	// this method is public so we can easily unit test
 	public function getController($url, $uri) {
-		
-		include(APPLICATION_PATH.'config/routes.php');
 
 		$uri = strtolower($uri);
 
-		// static routes
-		foreach ( $sroute as $pattern => $replacement) {
-			if ( strcasecmp($pattern, $uri)==0) {
-				return $this->extract_ctrl($replacement);
-			}
-		} 
+        $routes_string = file_get_contents(APPLICATION_PATH.'config/routes.json');
+        if ( $routes_string === FALSE) {
+            die('ERROR reading routes file');
+        }
+        $routes = json_decode($routes_string);
 
-		// regexp routes
-		foreach ( $rroute as $pattern => $replacement ) {
-			if ( preg_match($pattern, $uri) ) {
-				return $this->extract_ctrl(preg_replace($pattern, $replacement, $uri)); 
-			}
-		}
+        //static routes
+        if (isset($routes->static)) {
+            $static = $routes->static;
+            foreach ( $static as $pattern => $replacement) {
+                if ( strcasecmp($pattern, $uri)==0) {
+                    return $this->extract_ctrl($replacement);
+                }
+            }
+        }
+
+        //dynamic (regexp) routes
+        if (isset($routes->dynamic)) {
+            $dynamic = $routes->dynamic;
+            foreach ( $dynamic as $pattern => $replacement ) {
+                if ( preg_match($pattern, $uri) ) {
+                    return $this->extract_ctrl(preg_replace($pattern, $replacement, $uri));
+                }
+            }
+        }
 
 		return false;
 	}

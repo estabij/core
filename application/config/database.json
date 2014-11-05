@@ -1,0 +1,10 @@
+{
+    "mysqli":
+    {
+        "hostname": "localhost",
+        "username": "",
+        "password": "",
+        "port": 3306,
+        "db": ""
+    }
+}

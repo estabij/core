@@ -2,26 +2,15 @@
 /**
  * base_model
  *
- * @author Erik Stabij <erik@erikstabij.com>
+ * @author Erik Stabij
  * @version 0.10
  * @package core
  */
 require_once(SYSTEM_PATH.'core/driver_factory.php');
 class base_model {
-    
-    protected $driverDB;
-    
-    public function __construct() {
-        include(APPLICATION_PATH.'config/database.php');
-        $this->setDB($database);
-    }
-    
-    public function setDB($database) {
-         $this->driverDB = driver_factory::create($database);
-    }
-    
-    protected function db() {
-        return $this->driverDB;
+
+    protected function db_driver($driver_name) {
+        return driver_factory::getInstance()->getDriver($driver_name);
     }
 }
 /* End of file base_model.php */

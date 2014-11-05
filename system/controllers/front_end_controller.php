@@ -72,6 +72,12 @@ class front_end_controller {
 	}
 
 	public function run() {
+//        $router = router::getInstance();
+//        $url = $this->getUrl();
+//        $uri = $this->getUri();
+//        var_dump($router);
+//        var_dump($url);
+//        var_dump($uri);
 		router::getInstance()->route($this->getUrl(), $this->getUri());
 	}
 }
