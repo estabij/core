@@ -3,7 +3,7 @@
     {
         "/"                 : "index_controller/index",
         "/foo"              : "index_controller/foo",
-        "/bar"              : "index_controller/bar",
+        "/bar"              : "index_controller/bar"
     },
 
     "dynamic":
