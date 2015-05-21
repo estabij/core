@@ -46,7 +46,9 @@ class mysqlidriver implements db_driver {
     
     public function query($qry, array $params = array()) {
         $this->connect();
-        $result = $this->mysqli->query($this->prepare($qry, $params));
+        $query = $this->prepare($qry, $params);
+        //syslog(LOG_NOTICE,$query);
+        $result = $this->mysqli->query($query);
         if (!$result) {
             throw new Exception('Invalid query "'.$qry.'" Error: '.$this->mysqli->error);
         }
@@ -66,6 +68,7 @@ class mysqlidriver implements db_driver {
                 $qry = preg_replace('/\?/', $value, $qry, $limit);
             }
         }
+        $qry = str_replace('&#63;', '?', $qry);
         return $qry;
     }
 
@@ -140,7 +143,20 @@ class mysqli_query_result {
            return false;
         }       
     }
-    
+
+    public function result_one() {
+        $result = $this->result_array();
+        if (is_array($result)) {
+            if (IsSet($result[0])) {
+                return $result[0];
+            } else {
+                return $result;
+            }
+        } else {
+            return false;
+        }
+    }
+
     public function num_rows() {
         if (is_object($this->resultObject)) {
            return $this->resultObject->num_rows();

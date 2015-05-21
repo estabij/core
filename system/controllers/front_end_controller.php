@@ -31,21 +31,17 @@ class front_end_controller {
 
 		$parts = explode(".", $url);
 
-		switch ( count($parts) ) {
-			case 2:
-				$sub 		= '';	
-				$domain 	= $parts[0];	
-				$country 	= $parts[1]; 
-
-			break;
-			case 3:
-				$sub 		= $parts[0];	
-				$domain 	= $parts[1];	
-				$country 	= $parts[2];	
-			break;
-			default:
-				throw new Exception ('Router cannot handle url');
-		}
+        $numParts = count($parts);
+        if ( $numParts < 2 ) {
+            throw new Exception ('Router cannot handle url');
+        } else if ( $numParts == 2 ) {
+            $country = $parts[1];
+            $domain  = $parts[0];
+        } else {
+            $country = $parts[$numParts-1];
+            $sub     = $parts[0];
+            $domain = substr($url, strlen($sub)+1, strlen($url)-strlen($country)-strlen($sub)-2);
+        }
 
 		return array('url'=>$url, 'sub'=>$sub, 'domain'=>$domain, 'country'=>$country);
 	}
@@ -56,15 +52,6 @@ class front_end_controller {
 			if(strpos($uri, "?")!==false) {
 				list($uri,) = explode("?", $uri);
 			}
-			// $uri_parts1 = explode("/", $uri);
-
-			// $uri_parts = array();
-			// foreach($uri_parts1 as $uri_part) {
-			// 	if ( !empty($uri_part) ) {
-			// 		$uri_parts[] = $uri_part;
-			// 	}
-			// }			
-			// return array('uri'=>$uri, 'uri_parts'=>$uri_parts);
 			return $uri;
 		} else {
 			return false;
@@ -72,12 +59,6 @@ class front_end_controller {
 	}
 
 	public function run() {
-//        $router = router::getInstance();
-//        $url = $this->getUrl();
-//        $uri = $this->getUri();
-//        var_dump($router);
-//        var_dump($url);
-//        var_dump($uri);
 		router::getInstance()->route($this->getUrl(), $this->getUri());
 	}
 }

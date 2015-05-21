@@ -14,45 +14,48 @@ class base_controller {
 
     public function __construct() {}
 
-    protected function renderView($template, array $data = array(), $render=true) {
+    protected function renderView($template, array $data = array(), $render=true, $cache=true) {
+        $output = '';
         if ( $this->templating == 'Twig' ) {
-            $this->renderTwigView($template, $data, $render);
+            $output = $this->renderTwigView($template, $data, $cache);
         } else {
-            $this->renderBareView($template, $data, $render);
+            $output = $this->renderBareView($template, $data);
+        }
+        if ( $render ) {
+            echo $output;
+        } else {
+            return $output;
         }
     }
 
-    protected function renderBareView($template, array $data = array(), $render=true) {
+    protected function renderBareView($template, array $data = array()) {
 
         $base_url = $this->base_url();
         extract($data);
 
         ob_start();
         include(APPLICATION_PATH.'views/'.$template.'.html');
-        if ( $render ) {
-            ob_end_flush();
-            return true;
-        } else {
-            return ob_get_clean();
-        }
+        return ob_get_clean();
     }
 
-    protected function renderTwigView($template, array $data = array(), $render=true) {
+    protected function renderTwigView($template, array $data = array(), $cache=true) {
+
+        $cache = false; //handy for development
 
         $loader = new Twig_Loader_Filesystem(APPLICATION_PATH.'views/');
+
+        if ( $cache ) {
+            $cache = APPLICATION_PATH.'views/compilation_cache';
+        }
+
         $twig = new Twig_Environment($loader, array(
-            'cache' => APPLICATION_PATH.'views/compilation_cache',
+            'cache' => $cache,
         ));
 
         $base_url = $this->base_url();
         extract($data);
 
-        $output = $twig->render($template.'.html', $data);
-        if ( $render ) {
-            echo $output;
-        } else {
-            return $output;
-        }
+        return $twig->render($template.'.html', $data);
     }
 
     protected function base_url(){

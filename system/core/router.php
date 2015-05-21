@@ -1,4 +1,3 @@
-
 <?php
 /**
  * router
@@ -24,7 +23,6 @@ class router {
 
 	public function route($url, $uri) {
 		$ctrl = $this->getController($url, $uri);
-//        var_dump($ctrl);
 		if ( $ctrl ) {
 			$this->invoke_controller($ctrl);
 		} else {
@@ -32,19 +30,16 @@ class router {
 		}
 	}	
 
-	protected function invoke_controller($ctrl) {  
+	protected function invoke_controller($ctrl) {
 		try {
 		    if (!isset($ctrl['class'])) {
 		        throw new Exception("Invoke controller has no controller class!");
 		    }
 		    if (!isset($ctrl['method'])) {
 		        throw new Exception("Invoke controller has no controller method");
-		    }            
-
+		    }
 		    include(APPLICATION_PATH.'controllers/'.$ctrl['class'].'.php');
-
 		    call_user_func( array(new $ctrl['class'], $ctrl['method']), $ctrl['params'] );
-		    
 		} catch (Exception $e) {
 		    echo 'Exception: ',  $e->getMessage(), "\n";
 		}
@@ -105,6 +100,5 @@ class router {
 		return false;
 	}
 }
-
 /* End of file router.php */
 /* Location: ./system/core/router.php */
