@@ -2,13 +2,10 @@
     "static":
     {
         "/"                 : "index_controller/index",
-        "/foo"              : "index_controller/foo",
-        "/bar"              : "index_controller/bar"
+        "/foo"              : "index_controller/foo"
     },
     "dynamic":
     {
-        "#^/foo/([0-9]*)$#"                 : "index_controller/foo/$1",
-        "#^/bar/(.+)/(.+)$#"                : "index_controller/confirm/$1/$2",
-        "#^/language/(en|nl|de|fr)$#"       : "index_controller/language/$1",
+        "#^/bar/([0-9]*)$#" : "index_controller/bar/$1"
     }
 }

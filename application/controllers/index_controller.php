@@ -11,33 +11,8 @@ class index_controller extends base_controller {
 
     public function index(array $param = array()) {
 
-        $numParam = count($param);
+        echo 'index_controller::index() called';
 
-        switch ( $numParam ) {
-
-            case 0:
-                $this->renderView('index_view');
-            break;
-        
-            case 1:
-                $note = "This is ". $param[0];
-                $this->renderView('index_view', array('note'=>$note));
-            break;
-
-            case 2:
-                $note = "This is ".$param[0].'/'.$param[1];
-                $this->renderView('index_view', array('note'=>$note));
-            break;
-
-            case 3:
-                $note = "This is ".$param[0].'/'.$param[1] .'/'.$param[2];
-                $this->renderView('index_view', array('note'=>$note));
-            break;
-
-            default:
-                $note = "Extra parameters provided which we accept";
-                $this->renderView('index_view', array('note'=>$note));
-        }
     }
 
 }

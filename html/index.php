@@ -1,6 +1,6 @@
 <?php
 /*
-    Core Frameworks - version 0.10 - copyright Erik Stabij 
+    Core Frameworks - version 0.12 - copyright Erik Stabij
     
     Core -or Core Frameworks- is an ultra fast PHP framework with a minimal footprint.
 

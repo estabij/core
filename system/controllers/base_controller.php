@@ -14,33 +14,31 @@ class base_controller {
 
     public function __construct() {}
 
-    protected function renderView($template, array $data = array(), $render=true, $cache=true) {
-        $output = '';
+    protected function renderView($template, array $data = array(), $render=true) {
         if ( $this->templating == 'Twig' ) {
-            $output = $this->renderTwigView($template, $data, $cache);
+            $cache = false; //handy for development
+            $this->renderTwigView($template, $data, $render, $cache);
         } else {
-            $output = $this->renderBareView($template, $data);
-        }
-        if ( $render ) {
-            echo $output;
-        } else {
-            return $output;
+            $this->renderBareView($template, $data, $render);
         }
     }
 
-    protected function renderBareView($template, array $data = array()) {
+    protected function renderBareView($template, array $data = array(), $render=true) {
 
         $base_url = $this->base_url();
         extract($data);
 
         ob_start();
         include(APPLICATION_PATH.'views/'.$template.'.html');
-        return ob_get_clean();
+        if ( $render ) {
+            ob_end_flush();
+            return true;
+        } else {
+            return ob_get_clean();
+        }
     }
 
-    protected function renderTwigView($template, array $data = array(), $cache=true) {
-
-        $cache = false; //handy for development
+    protected function renderTwigView($template, array $data = array(), $render=true, $cache=true) {
 
         $loader = new Twig_Loader_Filesystem(APPLICATION_PATH.'views/');
 
@@ -55,7 +53,13 @@ class base_controller {
         $base_url = $this->base_url();
         extract($data);
 
-        return $twig->render($template.'.html', $data);
+        $output = $twig->render($template.'.html', $data);
+        if ( $render ) {
+            echo $output;
+            return true;
+        } else {
+            return $output;
+        }
     }
 
     protected function base_url(){
