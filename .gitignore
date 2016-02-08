@@ -1,4 +1,7 @@
-vendor
-.DS_Store
+/.idea/
+/vendor/
+/build
+/composer.lock
+/phpunit.xml
+/.DS_Store
 /.project
-.idea
