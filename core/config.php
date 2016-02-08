@@ -22,7 +22,7 @@ class config {
         if (! $this->configurations) {
             $configurations_string = file_get_contents(APPLICATION_PATH.'config/config.json');
             if ( $configurations_string === FALSE) {
-                die('ERROR reading config.json file');
+                throw new Exception('ERROR reading config.json file');
             }
             $this->configurations = json_decode($configurations_string);
         }

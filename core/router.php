@@ -51,7 +51,6 @@ class router {
 		$numparts = count($parts);
 
 		if ( $numparts < 2 ) {
-			var_dump($parts);
 			throw new Exception ( 'Router cannot find controller or method' );
 		}
 
@@ -73,7 +72,7 @@ class router {
 
         $routes_string = file_get_contents(APPLICATION_PATH.'config/routes.json');
         if ( $routes_string === FALSE) {
-            die('ERROR reading routes file');
+			throw new Exception('ERROR reading routes file');
         }
         $routes = json_decode($routes_string);
 
