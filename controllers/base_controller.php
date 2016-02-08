@@ -112,13 +112,6 @@ class base_controller {
         return $_SERVER['REQUEST_URI'];
     }
 
-    protected function dumpMethodInfo($methodName, $param) {
-        echo $methodName.PHP_EOL;
-        var_dump($param);
-        var_dump($_GET);
-        var_dump($_POST);
-    }
-
     /**
      * addGlobalViewVariable() can be used to pass a string or an object to the view
      *
