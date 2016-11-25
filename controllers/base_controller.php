@@ -6,7 +6,7 @@
 * @author estabij
 */
 
-require_once '../vendor/autoload.php'; //for Twig templating
+require_once '../../vendor/autoload.php'; //for Twig templating
 
 class base_controller {
 

@@ -20,15 +20,14 @@ class autoloader {
 
     private function __construct() {}
 
-    public function registerLoader() {
-        $this->init();
+    public function registerLoader($parentDirs) {
+        $this->init($parentDirs);
         spl_autoload_register(array($this, 'loader'));
     }
     
     // we could very well store the directories the autoloader searches
     // into memcache or redis 
-    protected function init() {
-        $parentDirs = array(SYSTEM_PATH, APPLICATION_PATH);
+    protected function init($parentDirs) {
         foreach ($parentDirs as $parentDir) {
             $dh = opendir($parentDir);
             while (false !== ($entry = readdir($dh))) {
