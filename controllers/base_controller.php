@@ -18,6 +18,7 @@ class base_controller {
         $this->addGlobalViewVariable('base_url', $this->base_url());
         $this->addGlobalViewVariable('page_url', $this->page_url());
         $this->globalFilters = [];
+        $this->globals = [];
     }
 
     protected function renderView($template, array $data = array(), $render=true, $cache=true) {
@@ -41,7 +42,7 @@ class base_controller {
         //filters are not supported in the bareView
 
         ob_start();
-        include(APPLICATION_PATH.'views/'.$template.'.html');
+        include(APPLICATION_PATH.'views/'.$template.'.html.twig');
         return ob_get_clean();
     }
 
@@ -62,10 +63,14 @@ class base_controller {
             'cache' => $cache,
         ));
 
-        $data = array_merge($data, $this->globals);
+        if ($this->globals) {
+            $data = array_merge($data, $this->globals);
+        }
 
-        foreach($this->globalFilters as $key=>$value) {
-            $twig->addFilter(new Twig_SimpleFilter($key, $value));
+        if ($this->globalFilters) {
+            foreach ($this->globalFilters as $key => $value) {
+                $twig->addFilter(new Twig_SimpleFilter($key, $value));
+            }
         }
 
         return $twig->render($template, $data);
@@ -90,10 +95,14 @@ class base_controller {
             'cache' => $cache,
         ));
 
-        $data = array_merge($data, $this->globals);
+        if ($this->globals) {
+            $data = array_merge($data, $this->globals);
+        }
 
-        foreach($this->globalFilters as $key=>$value) {
-            $twig->addFilter(new Twig_SimpleFilter($key, $value));
+        if ($this->globalFilters) {
+            foreach ($this->globalFilters as $key => $value) {
+                $twig->addFilter(new Twig_SimpleFilter($key, $value));
+            }
         }
 
         return $twig->render($template.'.html.twig', $data);
