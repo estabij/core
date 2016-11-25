@@ -1,6 +1,7 @@
 {
     "name": "core/core",
     "description": "Core Frameworks",
+    "version": "0.22",
     "keywords": ["php framework"],
     "homepage": "http://github.com/estabij/core",
     "type": "library",
